@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employer Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .sidebar { min-height: 100vh; background-color: #212529; }
+        .sidebar a { color: #fff; text-decoration: none; display: block; padding: 15px; }
+        .sidebar a:hover { background-color: #343a40; }
+        .card { border-radius: 15px; }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-lg-2 sidebar p-0">
+                <h4 class="text-white text-center py-3">Employer Panel</h4>
+                <a href="{% url 'add_job' %}">Add Job</a>
+                <a href="{% url 'emp_job' %}">My Jobs</a>
+                <a href="#">Applicants</a>
+                <a href="#">Company Profile</a>
+                <a href="{% url 'home' %}" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
+            </div>
+
+            <div class="col-md-9 col-lg-10 p-4">
+                <h2>Welcome {{ employer.name }}</h2>
+                <p class="text-muted">Here is your job posting overview.</p>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags|default:'info' }}" role="alert">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="row mt-4">
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow p-3 text-center">
+                            <h5>Total Jobs Posted</h5>
+                            <h3 class="text-primary">{{ total_jobs }}</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow p-3 text-center">
+                            <h5>Total Applicants</h5>
+                            <h3 class="text-success">{{ total_applicants }}</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow p-3 text-center">
+                            <h5>Active Jobs</h5>
+                            <h3 class="text-danger">{{ active_jobs }}</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow mt-4">
+                    <div class="card-body">
+                        <h5>Recent Job Posts</h5>
+                        <table class="table table-bordered mt-3">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Job Title</th>
+                                    <th>Location</th>
+                                    <th>Salary</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for job in jobs %}
+                                <tr>
+                                    <td>{{ job.job_title }}</td>
+                                    <td>{{ job.location }}</td>
+                                    <td>{{ job.salary|default:'-' }}</td>
+                                    <td>
+                                        {% if job.is_active %}
+                                            <span class="badge bg-success">Active</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">Closed</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center">No jobs posted yet.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Finder | Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-1: #f6f8fb;
+      --bg-2: #e7f0ff;
+      --ink: #0e1b2c;
+      --muted: #5a6b82;
+      --primary: #1565d8;
+      --primary-dark: #0f4fb0;
+      --white: #ffffff;
+      --card-border: #d9e4f7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Manrope", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 90% 10%, #dbeafe 0%, transparent 30%),
+        radial-gradient(circle at 5% 85%, #d1fae5 0%, transparent 28%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      min-height: 100vh;
+    }
+
+    .container {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 0;
+    }
+
+    .brand {
+      font-size: 1.3rem;
+      font-weight: 800;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn {
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: 10px 18px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-block;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      border-color: #c8d8f5;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: var(--white);
+      box-shadow: 0 8px 20px rgba(21, 101, 216, 0.28);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 34px 0 10px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 6vw, 3.3rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      margin: 14px auto 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 700px;
+    }
+
+    .roles {
+      margin: 36px auto 50px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .role-card {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 8px 30px rgba(15, 28, 50, 0.07);
+    }
+
+    .role-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.25rem;
+    }
+
+    .role-card p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .about {
+      margin: 8px auto 60px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 20px 22px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 780px) {
+      .roles {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="container">
+    <nav class="nav">
+      <a class="brand" href="{% url 'home' %}">Job Finder</a>
+      <div class="nav-links">
+        <a class="btn btn-outline" href="{% url 'login' %}">Login</a>
+        <a class="btn btn-primary" href="{% url 'register' %}">Register</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Build Your Career. Hire Better Talent.</h1>
+      <p>
+        Choose your role to get started. This platform connects employers and job seekers in one simple workflow.
+      </p>
+    </section>
+
+    <section class="roles" id="choose-role">
+      <article class="role-card">
+        <h3>I am an Employer</h3>
+        <p>Post jobs, manage applicants, and find the right people faster.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="{% url 'register' %}">Register as Employer</a>
+          <a class="btn btn-outline" href="{% url 'login' %}">Employer Login</a>
+        </div>
+      </article>
+
+      <article class="role-card">
+        <h3>I am a Job Seeker</h3>
+        <p>Create your profile, apply to jobs, and track your applications.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="{% url 'user_reg'%}">Register as Job Seeker</a>
+          <a class="btn btn-outline" href="{% url 'user_log' %}">Job Seeker Login</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="about" id="about">
+      <strong>About Job Finder:</strong>
+      Job Finder helps employers and job seekers connect through a clean, easy-to-use platform built for quick hiring and smooth applications.
+    </section>
+  </main>
+
+  <footer class="container" style="padding-bottom: 24px; color: #6c7e97; font-size: 0.92rem; text-align: center;">
+    (c) 2026 Job Finder
+  </footer>
+</body>
+</html>

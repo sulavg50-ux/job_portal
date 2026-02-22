@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Job | Job Finder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+        .card {
+            border-radius: 15px;
+        }
+        .form-control, .form-select {
+            border-radius: 10px;
+        }
+        .btn-primary {
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+<div class="container mt-5">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-center mb-4">Post a New Job</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags|default:'info' }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form action="{% url 'add_job' %}" method="POST" enctype="multipart/form-data">
+           
+             {% csrf_token %}
+
+            <!-- Job Title -->
+            <div class="mb-3">
+                <label class="form-label">Job Title</label>
+                <input type="text" class="form-control" name="job_title" placeholder="Enter job title" required>
+            </div>
+
+            <!-- Company Name -->
+            <div class="mb-3">
+                <label class="form-label">Company Name</label>
+                <input type="text" class="form-control" name="company_name" placeholder="Enter company name" required>
+            </div>
+
+            <!-- Location -->
+            <div class="mb-3">
+                <label class="form-label">Location</label>
+                <input type="text" class="form-control" name="location" placeholder="Enter job location" required>
+            </div>
+
+            <!-- Study Requirement -->
+            <div class="mb-3">
+                <label class="form-label">Minimum Study Requirement</label>
+                <select class="form-select" name="education" required>
+                    <option value="">-- Select Education Level --</option>
+                    <option value="+2 Passed">+2 Passed</option>
+                    <option value="Bachelor Running">Bachelor Running</option>
+                    <option value="Bachelor Completed">Bachelor Completed</option>
+                    <option value="Master Completed">Master Completed</option>
+                </select>
+            </div>
+
+            <!-- Salary -->
+            <div class="mb-3">
+                <label class="form-label">Salary (Optional)</label>
+                <input type="text" class="form-control" name="salary" placeholder="e.g. Rs. 50,000/month">
+            </div>
+
+            <!-- Job Description -->
+            <div class="mb-3">
+                <label class="form-label">Job Description</label>
+                <textarea class="form-control" name="description" rows="5" placeholder="Write job details..." required></textarea>
+            </div>
+
+            <!-- Upload Image -->
+            <div class="mb-3">
+                <label class="form-label">Upload Company / Job Image</label>
+                <input type="file" class="form-control" name="job_image" accept="image/*">
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary px-4">Post Job</button>
+                <button type="button" class="btn btn-secondary px-4"
+            onclick="window.location.href='{% url 'emp_dash' %}'">
+        Cancel
+    </button>
+
+            </div>
+            
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

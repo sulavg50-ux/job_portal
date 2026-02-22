@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Jobs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-soft: #f4f7fb;
+            --ink: #1f2937;
+            --muted: #6b7280;
+            --line: #e6ebf2;
+            --brand: #0d6efd;
+            --brand-2: #2a8cff;
+            --warn: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        body {
+            background: linear-gradient(180deg, #f7faff 0%, var(--bg-soft) 100%);
+            color: var(--ink);
+        }
+
+        .page-title {
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            margin: 0;
+        }
+
+        .sub-title {
+            color: var(--muted);
+            margin-top: 4px;
+            margin-bottom: 0;
+            font-size: 0.95rem;
+        }
+
+        .jobs-card {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            background: #fff;
+        }
+
+        .jobs-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(16, 24, 40, 0.08);
+        }
+
+        .job-title {
+            font-size: 1.08rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .job-company {
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #e7f8ee;
+            color: #137a3d;
+        }
+
+        .status-closed {
+            background: #f1f3f5;
+            color: #5c6672;
+        }
+
+        .btn-soft-brand {
+            background: linear-gradient(135deg, var(--brand), var(--brand-2));
+            border: none;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .btn-soft-brand:hover {
+            color: #fff;
+            filter: brightness(0.96);
+        }
+
+        .btn-edit {
+            border: 1px solid #f5d38a;
+            background: #fff8e8;
+            color: #9a6700;
+            font-weight: 600;
+        }
+
+        .btn-delete {
+            border: 1px solid #f2b4b4;
+            background: #fff0f0;
+            color: #b42318;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-end mb-3">
+            <div>
+                <h2 class="page-title">My Job Listings</h2>
+                <p class="sub-title">Manage your active and closed job posts</p>
+            </div>
+            <a href="{% url 'add_job' %}" class="btn btn-soft-brand">Add New Job</a>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags|default:'info' }}" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="row mt-3">
+            {% for job in jobs %}
+            <div class="col-md-4">
+                <div class="card jobs-card mb-4">
+                    <div class="card-body">
+                        <h5 class="job-title">{{ job.job_title }}</h5>
+                        <p class="job-company">{{ job.company_name }}</p>
+                        <p class="mb-1"><strong>Location:</strong> {{ job.location }}</p>
+                        <p class="mb-2"><strong>Salary:</strong> {{ job.salary|default:'-' }}</p>
+                        <p>{{ job.job_description|truncatewords:20 }}</p>
+                        {% if job.is_active %}
+                            <span class="status-pill status-active">Active</span>
+                        {% else %}
+                            <span class="status-pill status-closed">Closed</span>
+                        {% endif %}
+                        <div class="mt-3 d-flex gap-2">
+                            <button type="button" class="btn btn-edit btn-sm px-3">Edit</button>
+                            <button type="button" class="btn btn-delete btn-sm px-3">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+                <p>No jobs posted yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
