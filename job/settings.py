@@ -24,10 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-cz$qmud!s-)ggvv69g-&(qv9b(@yn+nsp=-lc!8j-g^1l%5q7h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+DEBUG = False
+ALLOWED_HOSTS = ['job-portal-2-szyr.onrender.com']
 
 # Application definition
 
