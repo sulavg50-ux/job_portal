@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Job</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-soft: #f4f7fb;
+            --ink: #1f2937;
+            --muted: #6b7280;
+            --line: #e6ebf2;
+            --brand: #0d6efd;
+            --brand-2: #2a8cff;
+        }
+
+        body {
+            background: linear-gradient(180deg, #f7faff 0%, var(--bg-soft) 100%);
+            color: var(--ink);
+        }
+
+        .form-card {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: #fff;
+            box-shadow: 0 12px 28px rgba(16, 24, 40, 0.05);
+        }
+
+        .page-title {
+            font-weight: 700;
+        }
+
+        .btn-soft-brand {
+            background: linear-gradient(135deg, var(--brand), var(--brand-2));
+            border: none;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .btn-soft-brand:hover {
+            color: #fff;
+            filter: brightness(0.96);
+        }
+    </style>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card form-card p-4">
+                <h3 class="page-title mb-4">Edit Job</h3>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label">Job Title</label>
+                        <input type="text" name="job_title" class="form-control"
+                               value="{{ job.job_title }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Company Name</label>
+                        <input type="text" name="company_name" class="form-control"
+                               value="{{ job.company_name }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Location</label>
+                        <input type="text" name="location" class="form-control"
+                               value="{{ job.location }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Salary</label>
+                        <input type="text" name="salary" class="form-control"
+                               value="{{ job.salary }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Job Description</label>
+                        <textarea name="job_description" class="form-control"
+                                  rows="4" required>{{ job.job_description }}</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Job Image</label>
+                        <input type="file" name="job_image" class="form-control">
+                        {% if job.job_image %}
+                            <img src="{{ job.job_image.url }}" 
+                                 class="img-fluid rounded mt-2" width="200">
+                        {% endif %}
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox"
+                               name="is_active"
+                               {% if job.is_active %}checked{% endif %}>
+                        <label class="form-check-label">
+                            Active Job
+                        </label>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'emp_job' %}" class="btn btn-secondary">
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-soft-brand px-4">
+                            Update Job
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

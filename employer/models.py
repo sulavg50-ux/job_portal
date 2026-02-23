@@ -24,6 +24,7 @@ class AddJob(models.Model):
     employer = models.ForeignKey(Employer, on_delete=models.CASCADE, related_name="jobs")
     job_title = models.CharField(max_length=150)
     company_name = models.CharField(max_length=150)
+    job_image = models.FileField(upload_to="job_images/", blank=True, null=True)
     location = models.CharField(max_length=150)
     job_description = models.TextField()
     salary = models.CharField(max_length=100, blank=True)
@@ -32,3 +33,5 @@ class AddJob(models.Model):
 
     def __str__(self):
         return f"{self.job_title} - {self.company_name}"
+    
+

@@ -8,7 +8,11 @@
 <body>
 
 <div class="container mt-5">
-    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags|default:'info' }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
 
     <h2>Welcome {{ user.user_name }}</h2>
     <p class="text-muted">Find your dream job here 🚀</p>
@@ -39,10 +43,48 @@
     </div>
 
     <div class="mt-4">
-        <a href="#" class="btn btn-primary">Browse Jobs</a>
-        <a href="#" class="btn btn-success">My Applications</a>
+        <a href="{%url 'application'%}" class="btn btn-primary">Send Applications</a>
+        <a href="{%url 'view_app'%}" class="btn btn-success">My Applications</a>
         <a href="#" class="btn btn-warning">Edit Profile</a>
         <a href="{% url 'home'%}" class="btn btn-danger"onclick="return confirm('Are you sure you want to logout?');">Logout</a>
+    </div>
+
+    <div class="card shadow mt-4">
+        <div class="card-body">
+            <h5 class="card-title mb-3">My Applications</h5>
+            {% if applications %}
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle">
+                        <thead>
+                            <tr>
+                                <th>Job</th>
+                                <th>Company</th>
+                                <th>Applied On</th>
+                                <th>Resume</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for application in applications %}
+                                <tr>
+                                    <td>{{ application.job.job_title }}</td>
+                                    <td>{{ application.job.company_name }}</td>
+                                    <td>{{ application.created_at|date:"M d, Y H:i" }}</td>
+                                    <td>
+                                        {% if application.resume %}
+                                            <a href="{{ application.resume.url }}" target="_blank" rel="noopener">View</a>
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted mb-0">You have not submitted any applications yet.</p>
+            {% endif %}
+        </div>
     </div>
 
 </div>

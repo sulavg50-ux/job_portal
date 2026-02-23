@@ -9,4 +9,7 @@ urlpatterns = [
     path('emp_das/', views.emp_dash),
     path('add_job/', views.add_job, name='add_job'),
     path('emp_job/', views.emp_job, name='emp_job'),
+    path('edit/<int:job_id>/', views.edit, name='edit'),
+    path('delete/<int:job_id>/', views.delete, name='delete'),
+    path('application/<int:application_id>/<str:action>/', views.update_application_status, name='update_application_status'),
 ]

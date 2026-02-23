@@ -14,7 +14,7 @@
     </style>
 </head>
 <body>
-    {% include 'navbar.html' %}
+    
 
     <div class="container-fluid">
         <div class="row">
@@ -22,8 +22,8 @@
                 <h4 class="text-white text-center py-3">Employer Panel</h4>
                 <a href="{% url 'add_job' %}">Add Job</a>
                 <a href="{% url 'emp_job' %}">My Jobs</a>
-                <a href="#">Applicants</a>
-                <a href="#">Company Profile</a>
+                <a href="#applicants">Applicants</a>
+                
                 <a href="{% url 'home' %}" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
             </div>
 
@@ -87,6 +87,69 @@
                                 {% empty %}
                                 <tr>
                                     <td colspan="4" class="text-center">No jobs posted yet.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card shadow mt-4" id="applicants">
+                    <div class="card-body">
+                        <h5>Applicants</h5>
+                        <table class="table table-bordered mt-3">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Job</th>
+                                    <th>Email</th>
+                                    <th>Resume</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for application in applications %}
+                                <tr>
+                                    <td>{{ application.full_name }}</td>
+                                    <td>{{ application.job.job_title }}</td>
+                                    <td>{{ application.email }}</td>
+                                    <td>
+                                        {% if application.resume %}
+                                            <a href="{{ application.resume.url }}" target="_blank" rel="noopener">View</a>
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if application.status == 'approved' %}
+                                            <span class="badge bg-success">Approved</span>
+                                        {% elif application.status == 'rejected' %}
+                                            <span class="badge bg-danger">Rejected</span>
+                                        {% else %}
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if application.status == 'pending' %}
+                                            <div class="d-flex gap-2">
+                                                <form method="post" action="{% url 'update_application_status' application.id 'approve' %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                                                </form>
+                                                <form method="post" action="{% url 'update_application_status' application.id 'reject' %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                                                </form>
+                                            </div>
+                                        {% else %}
+                                            <span class="text-muted">Updated</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6" class="text-center">No applications yet.</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
