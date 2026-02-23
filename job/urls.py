@@ -19,8 +19,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from employer.views import home as employer_home
 
 urlpatterns = [
+    path("", employer_home, name="site_home"),
+    path("home/", employer_home, name="home_root"),
     path("admin/", admin.site.urls),
     path("employer/", include("employer.urls")),
     path("user/", include("user.urls")),
