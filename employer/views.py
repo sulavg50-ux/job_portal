@@ -195,7 +195,10 @@ def edit(request, job_id):
         messages.error(request, "Admin must approve your account first.")
         return redirect("login")
 
-    job = get_object_or_404(AddJob, id=job_id, employer=employer)
+    job = AddJob.objects.filter(id=job_id, employer=employer).first()
+    if not job:
+        messages.error(request, "Job not found.")
+        return redirect("emp_job")
 
     if request.method == "POST":
         job.job_title = request.POST.get("job_title", "").strip()
@@ -222,7 +225,10 @@ def delete(request, job_id):
         return redirect("login")
 
     employer = get_object_or_404(Employer, id=employer_id)
-    job = get_object_or_404(AddJob, id=job_id, employer=employer)
+    job = AddJob.objects.filter(id=job_id, employer=employer).first()
+    if not job:
+        messages.error(request, "Job not found.")
+        return redirect("emp_job")
     job.delete()
     messages.success(request, "Job deleted successfully.")
     return redirect("emp_job")

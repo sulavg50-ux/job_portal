@@ -45,7 +45,11 @@
     <div class="mt-4">
         <a href="{%url 'application'%}" class="btn btn-primary">Send Applications</a>
         <a href="{%url 'view_app'%}" class="btn btn-success">My Applications</a>
-        <a href="#" class="btn btn-warning">Edit Profile</a>
+        {% if latest_application %}
+            <a href="{% url 'edit_application' latest_application.id %}" class="btn btn-warning">Edit Profile</a>
+        {% else %}
+            <a href="#" class="btn btn-warning disabled" aria-disabled="true">Edit Profile</a>
+        {% endif %}
         <a href="{% url 'home'%}" class="btn btn-danger"onclick="return confirm('Are you sure you want to logout?');">Logout</a>
     </div>
 

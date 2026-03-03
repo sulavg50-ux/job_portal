@@ -61,12 +61,14 @@ def user_dash(request):
         messages.error(request, "Session expired. Please login again.")
         return redirect('user_log')
     applications = JobApplication.objects.filter(user=user).select_related("job")
+    latest_application = applications.order_by("-created_at").first()
     context = {
         "user": user,
         "total_applications": applications.count(),
         "pending": applications.filter(status=JobApplication.STATUS_PENDING).count(),
         "accepted": applications.filter(status=JobApplication.STATUS_APPROVED).count(),
         "applications": applications,
+        "latest_application": latest_application,
     }
     return render(request, 'user_dash.html', context)
 
@@ -137,3 +139,49 @@ def delete_application(request, application_id):
     application.delete()
     messages.success(request, "Application deleted successfully.")
     return redirect("view_app")
+
+def edit_application_redirect(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        messages.error(request, "Please login first.")
+        return redirect('user_log')
+
+    latest_application = JobApplication.objects.filter(user_id=user_id).order_by("-created_at").first()
+    if not latest_application:
+        messages.error(request, "No application found to edit.")
+        return redirect("view_app")
+
+    return redirect("edit_application", application_id=latest_application.id)
+
+def edit_application(request, application_id):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        messages.error(request, "Please login first.")
+        return redirect('user_log')
+
+    application = JobApplication.objects.filter(id=application_id, user_id=user_id).first()
+    if not application:
+        messages.error(request, "Application not found.")
+        return redirect("view_app")
+
+    if request.method == "POST":
+        application.full_name = request.POST.get("name", "").strip()
+        application.email = request.POST.get("email", "").strip()
+        application.phone = request.POST.get("phone", "").strip()
+        application.city = request.POST.get("city", "").strip()
+        application.study = request.POST.get("study", "").strip()
+        application.skills = request.POST.get("skills", "").strip()
+
+        if request.FILES.get("resume"):
+            application.resume = request.FILES.get("resume")
+
+        application.save()
+        messages.success(request, "Application updated successfully.")
+        return redirect("view_app")
+
+    applications = JobApplication.objects.filter(user_id=user_id).select_related("job").order_by("-created_at")
+    context = {
+        "application": application,
+        "applications": applications,
+    }
+    return render(request, "user/edit_application.html", context)

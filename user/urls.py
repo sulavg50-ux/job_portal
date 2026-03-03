@@ -7,5 +7,7 @@ urlpatterns = [
     path('user_dash/', views.user_dash, name='user_dash'),
     path('application/',views.application,name='application'),
     path('view_app/', views.view_app, name='view_app'),
+    path('edit_application/', views.edit_application_redirect, name='edit_application_redirect'),
+    path('edit_application/<int:application_id>/', views.edit_application, name='edit_application'),
     path('delete_application/<int:application_id>/', views.delete_application, name='delete_application'),
 ]
